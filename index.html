@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire d'Images et Prompts IA (Local)</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <header>
+        <h1>Mon Gestionnaire d'Images et Prompts IA</h1>
+        <p>Une solution locale pour sauvegarder vos créations IA.</p>
+    </header>
+
+    <main>
+        <section id="add-entry-section">
+            <h2>Ajouter une Nouvelle Création</h2>
+            <div class="form-group">
+                <label for="image-upload">Déposer ou sélectionner une image :</label>
+                <input type="file" id="image-upload" accept="image/*">
+                <div id="image-preview" class="image-preview">
+                    <p>Prévisualisation de l'image ici</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="prompt-input">Prompt de l'image :</label>
+                <textarea id="prompt-input" rows="6" placeholder="Collez votre prompt ici..."></textarea>
+            </div>
+            <button id="add-to-queue-btn">Ajouter à la file d'attente</button>
+        </section>
+
+        ---
+
+        <section id="save-status-section">
+            <h2>Statut de Sauvegarde</h2>
+            <p>Enregistrements en attente : <span id="pending-count">0</span></p>
+            <button id="save-all-btn">Sauvegarder toutes les modifications</button>
+            <p id="save-message" class="message"></p>
+        </section>
+
+        ---
+
+        <section id="view-data-section">
+            <h2>Consulter Mes Données</h2>
+            <div class="form-group">
+                <label for="load-json-file">Charger un fichier de sauvegarde JSON :</label>
+                <input type="file" id="load-json-file" accept=".json">
+            </div>
+            <button id="display-data-btn">Afficher les données</button>
+            <p id="load-message" class="message"></p>
+            <div id="image-gallery" class="image-gallery">
+                <p class="placeholder">Chargez un fichier JSON pour afficher vos créations.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Mon Gestionnaire IA - Application Locale</p>
+    </footer>
+
+    <script src="script.js"></script> </body>
+</html>
 
