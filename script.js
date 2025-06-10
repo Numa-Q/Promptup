@@ -123,6 +123,95 @@ async function updatePendingCount() {
     }
 }
 
+// script.js (suite)
+
+// --- 6. Références aux éléments du DOM ---
+const imageUploadInput = document.getElementById('image-upload');
+const imagePreview = document.getElementById('image-preview');
+const promptInput = document.getElementById('prompt-input');
+const addToQueueBtn = document.getElementById('add-to-queue-btn');
+const saveMessageElement = document.getElementById('save-message'); // Pour les messages de la section sauvegarde
+
+let selectedImageFile = null; // Variable pour stocker le fichier image sélectionné
+
+// --- 7. Gestion de la sélection et prévisualisation de l'image ---
+imageUploadInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        selectedImageFile = file; // Stocke le fichier pour un usage ultérieur
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            imagePreview.innerHTML = `<img src="${e.target.result}" alt="Prévisualisation de l'image">`;
+        };
+        reader.readAsDataURL(file); // Lit le fichier comme une URL de données
+    } else {
+        selectedImageFile = null;
+        imagePreview.innerHTML = '<p>Prévisualisation de l\'image ici</p>';
+        showMessage(saveMessageElement, 'Veuillez sélectionner un fichier image valide.', 'error');
+    }
+});
+
+// --- 8. Gestion de l'ajout à la file d'attente ---
+addToQueueBtn.addEventListener('click', async () => {
+    const prompt = promptInput.value.trim();
+
+    if (!selectedImageFile) {
+        showMessage(saveMessageElement, 'Veuillez d\'abord sélectionner une image.', 'error');
+        return;
+    }
+
+    if (!prompt) {
+        showMessage(saveMessageElement, 'Le prompt ne peut pas être vide.', 'error');
+        return;
+    }
+
+    // Désactive le bouton pour éviter les clics multiples
+    addToQueueBtn.disabled = true;
+
+    try {
+        const newEntry = {
+            id: Date.now().toString(), // Utilisation du timestamp comme ID unique simple
+            imageFileName: selectedImageFile.name,
+            prompt: prompt,
+            creationDate: new Date().toISOString()
+        };
+
+        await addPendingEntry(newEntry); // Ajoute à IndexedDB
+        showMessage(saveMessageElement, 'Enregistrement ajouté à la file d\'attente !', 'success');
+
+        // Réinitialisation de l'interface après ajout
+        imageUploadInput.value = ''; // Réinitialise l'input file
+        selectedImageFile = null;
+        imagePreview.innerHTML = '<p>Prévisualisation de l\'image ici</p>';
+        promptInput.value = ''; // Vide le champ du prompt
+
+    } catch (error) {
+        console.error("Erreur lors de l'ajout à la file d'attente :", error);
+        showMessage(saveMessageElement, `Erreur : ${error.message || error}`, 'error');
+    } finally {
+        // Réactive le bouton
+        addToQueueBtn.disabled = false;
+    }
+});
+
+
+// --- 9. Fonction utilitaire pour afficher les messages ---
+function showMessage(element, message, type) {
+    element.textContent = message;
+    element.className = `message ${type}`; // Ajoute la classe 'success' ou 'error'
+    element.style.display = 'block'; // Affiche le message
+
+    // Masque le message après quelques secondes
+    setTimeout(() => {
+        element.style.display = 'none';
+        element.textContent = '';
+        element.className = 'message';
+    }, 5000); // Le message disparaît après 5 secondes
+}
+
+
+
 // --- 5. Lancement de l'Initialisation de la Base de Données ---
 // On s'assure que le DOM est complètement chargé avant d'ouvrir la DB
 document.addEventListener('DOMContentLoaded', () => {
