@@ -1,4 +1,5 @@
-Devlog : Application Locale de Gestion d'Images et Prompts IA
+##Devlog : Application Locale de Gestion d'Images et Prompts IA
+
 Ce document récapitule les décisions clés et la proposition de MVP pour une application locale HTML/CSS/JS de gestion d'images générées par IA et leurs prompts associés. Il est conçu pour servir de référence rapide et reprendre le développement même en cas de coupure internet.
 1. Objectif Principal
 Développer une application web fonctionnant entièrement en local (sans serveur) pour permettre aux utilisateurs de sauvegarder et consulter leurs images IA et prompts, en évitant la perte de données d'un service en ligne sans mécanisme de sauvegarde. L'accent est mis sur la simplicité et la robustesse pour un MVP.
